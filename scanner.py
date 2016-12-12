@@ -8,7 +8,7 @@ class TinyScanner(object):
     def setTinyCode(self, tiny_code):
         self.tiny_code = tiny_code
 
-    def parse(self):
+    def scan(self):
         tokens_list = []
         for tiny_in in io.StringIO(self.tiny_code):
             token_str = ""
@@ -92,6 +92,6 @@ class TinyScanner(object):
         return tokens_output
 
         def createOutputFile(self, filename):
-            output_code = self.parse(self.tiny_code)
+            output_code = self.scan(self.tiny_code)
             with open(filename, 'w+') as out:
                 out.write(output_code)
