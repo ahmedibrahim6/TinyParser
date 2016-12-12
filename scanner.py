@@ -93,7 +93,7 @@ class TinyScanner(object):
 
         return tokens_output
 
-        def createOutputFile(self, filename):
-            output_code = self.scan(self.tiny_code)
-            with open(filename, 'w+') as out:
-                out.write(output_code)
+    def createOutputFile(self, filename):
+        output_code = self.scan()
+        with open(filename, 'w+') as out:
+            out.write(output_code)
