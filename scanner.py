@@ -3,9 +3,11 @@ import io
 
 class TinyScanner(object):
     def __init__(self, tiny_code=""):
+        tiny_code.encode(encoding="utf-8")
         self.tiny_code = tiny_code
 
     def setTinyCode(self, tiny_code):
+        tiny_code.encode(encoding="utf-8")
         self.tiny_code = tiny_code
 
     def scan(self):
