@@ -1,7 +1,8 @@
 #python2 & python3
 class Node:
-    def __init__(self,x):
-        self.value = x
+    def __init__(self,x,y):
+        self.token_value = x
+        self.code_value =  y
         self.children = []
         self.index=None
 
@@ -20,24 +21,25 @@ class Parser:
 
     def __init__(self):
         self.token=str
-        self.code=['identifier',':=','identifier','+','number']
-        self.tmp_index=0
-        self.token=self.code[self.tmp_index]
+        self.tokens_list=['identifier',':=','identifier','+','number']
+        self.code_list=['x',':=','x','+','5']
+        self.tmp_index = 0
+        self.token=self.tokens_list[self.tmp_index]
         self.parse_tree=None
         self.nodes_table=None
         self.edges_table=None
 
-
-    def set_code(self,x):
-        self.code=x
+    def set_tokens_list_and_code_list(self,x,y):
+        self.code_list = y
+        self.tokens_list=x
         self.tmp_index = 0
-        self.token = self.code[self.tmp_index]
+        self.token = self.tokens_list[self.tmp_index]
 
     def next_token(self):
-        if(self.tmp_index==len(self.code)-1):
+        if(self.tmp_index==len(self.tokens_list)-1):
             return False  # we have reachd the end of the list
         self.tmp_index = self.tmp_index + 1
-        self.token=self.code[self.tmp_index]
+        self.token=self.tokens_list[self.tmp_index]
         return True
 
     def match(self,x):
@@ -51,7 +53,7 @@ class Parser:
         t=self.statement()
         p=t
         while self.token==';':
-            q=Node(None)
+            q=Node(None,None)
             self.match(';')
             q=self.statement()
             if q == None:
@@ -86,7 +88,7 @@ class Parser:
 
 
     def if_stmt(self):
-        t=Node('if')
+        t=Node('if',self.code_list[self.tmp_index])
         if self.token=='if':
             self.match('if')
             t.set_children(self.exp())
@@ -100,7 +102,7 @@ class Parser:
     def exp(self):
         t=self.simple_exp()
         if self.token=='<' or self.token=='>' or self.token=='=':
-            p=Node(self.token)
+            p=Node(self.token,self.code_list[self.tmp_index])
             p.set_children(t)
             t=p
             self.comparison_op()
@@ -118,7 +120,7 @@ class Parser:
     def simple_exp(self):
         t=self.term()
         while self.token=='+' or self.token=='-':
-            p=Node('Opk')
+            p=Node('Opk',self.code_list[self.tmp_index])
             p.set_children(t)
             t=p
             self.addop()
@@ -134,7 +136,7 @@ class Parser:
     def term(self):
         t=self.factor()
         while self.token=='*' or self.token=='/':
-            p=Node('Opk')
+            p=Node('Opk',self.code_list[self.tmp_index])
             p.set_children(t)
             t=p
             self.mulop()
@@ -153,10 +155,10 @@ class Parser:
             t=self.exp()
             self.match(')')
         elif self.token=='number':
-            t=Node('ConstK')
+            t=Node('ConstK',self.code_list[self.tmp_index])
             self.match('number')
         elif self.token=='identifier':
-            t=Node('Idk')
+            t=Node('Idk',self.code_list[self.tmp_index])
             self.match('identifier')
         else:
             raise ValueError('SyntaxError',self.token)
@@ -164,7 +166,7 @@ class Parser:
         return t
 
     def repeat_stmt(self):
-        t=Node('repeat')
+        t=Node('repeat',self.code_list[self.tmp_index])
         if self.token=='repeat':
             self.match('repeat')
             t.set_children(self.stmt_sequence())
@@ -173,20 +175,20 @@ class Parser:
         return t
 
     def assign_stmt(self):
-        t=Node('assign')
+        t=Node('assign',self.code_list[self.tmp_index])
         self.match('identifier')
         self.match(':=')
         t.set_children(self.exp())
         return t
 
     def read_stmt(self):
-        t=Node('read')
+        t=Node('read',self.code_list[self.tmp_index])
         self.match('read')
         self.match('identifier')
         return t
 
     def write_stmt(self):
-        t=Node('write')
+        t=Node('write',self.code_list[self.tmp_index])
         self.match('write')
         t.set_children(self.exp())
         return t
@@ -194,14 +196,14 @@ class Parser:
     def create_nodes_table(self,args=None):
         if args==None:
             self.parse_tree.index=Parser.tmp_index
-            Parser.nodes_table.update({Parser.tmp_index:self.parse_tree.value})
+            Parser.nodes_table.update({Parser.tmp_index:self.parse_tree.code_value})
             Parser.tmp_index=Parser.tmp_index+1
             if len(self.parse_tree.children) !=0:
                 for i in self.parse_tree.children:
                     self.create_nodes_table(i)
         else:
             args.index=Parser.tmp_index
-            Parser.nodes_table.update({Parser.tmp_index:args.value})
+            Parser.nodes_table.update({Parser.tmp_index:args.code_value})
             Parser.tmp_index=Parser.tmp_index+1
             if len(args.children) !=0:
                 for i in args.children:
@@ -229,19 +231,21 @@ class Parser:
         self.create_edges_table()               #create edges_table
         self.edges_table=Parser.edges_table     #save edges_table
         self.nodes_table=Parser.nodes_table     #save nodes_table
-        if  self.tmp_index==len(self.code)-1:
+        if  self.tmp_index==len(self.tokens_list)-1:
             print('success')
-        elif self.tmp_index<len(self.code):
+        elif self.tmp_index<len(self.tokens_list):
             raise ValueError('SyntaxError',self.token)
 
 
 
 p=Parser()
-#p.set_code(['identifier',':=','identifier','+','number',';','identifier',':=','number','*','number'])
-p.set_code(['if','number','<','identifier','then','identifier',':=','number',';','repeat',
+#p.set_tokens_list_and_code_list(['identifier',':=','identifier','+','number',';','identifier',':=','number','*','number'])
+p.set_tokens_list_and_code_list(['if','number','<','identifier','then','identifier',':=','number',';','repeat',
             'identifier',':=','identifier','*','identifier',';','identifier',':=','identifier',
-            '-','number','until','identifier','=','number',';','write','identifier','end'])
-#p.set_code(['if','identifier','<','number','then','identifier',':=','number','end'])
+            '-','number','until','identifier','=','number',';','write','identifier','end'],
+            ['if','0','<','x','then','fact',':=','1',';','repeat','fact',':=','fact','*','x',
+            ';','x',':=','x','-','1',';','until','x','=','0',';','write','fact','end'])
+#p.set_tokens_list_and_code_list(['if','identifier','<','number','then','identifier',':=','number','end'])
 p.run()
 
 print (p.nodes_table)
