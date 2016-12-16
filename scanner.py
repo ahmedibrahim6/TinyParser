@@ -99,7 +99,9 @@ class TinyScanner(object):
             elif t.isalpha():
                 tokens_output.append("identifier")
             else:
-                tokens_output.append("comment")
+                pass
+                #tokens_output.append("comment")
+
 
         self.code_list = tokens_list
         self.tokens_list = tokens_output
