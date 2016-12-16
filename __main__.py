@@ -14,6 +14,7 @@ class TinyParserWidget(QWidget):
     def initUI(self):
         lbl = QLabel('Enter Tiny Code', self)
         self.input_code = QTextEdit()
+        self.add_initial_code()
         submit_button = QPushButton('Parse')
         submit_button.clicked.connect(self.submitted)
         grid = QGridLayout()
@@ -25,6 +26,17 @@ class TinyParserWidget(QWidget):
         self.setGeometry(300, 300, 350, 300)
         self.setWindowTitle('Tiny Parser')
         self.show()
+
+    def add_initial_code(self):
+        self.input_code.append("read x;")
+        self.input_code.append("if 0<x then")
+        self.input_code.append("    fact:=1;")
+        self.input_code.append("    repeat")
+        self.input_code.append("        fact:=fact*x;")
+        self.input_code.append("        x:=x-1")
+        self.input_code.append("    until x=0;")
+        self.input_code.append("    write fact")
+        self.input_code.append("end")
 
     def draw(self):
         graph = self.G
