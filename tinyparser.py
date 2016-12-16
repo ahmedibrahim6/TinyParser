@@ -235,18 +235,3 @@ class Parser:
             print('success')
         elif self.tmp_index<len(self.tokens_list):
             raise ValueError('SyntaxError',self.token)
-
-
-
-p=Parser()
-#p.set_tokens_list_and_code_list(['identifier',':=','identifier','+','number',';','identifier',':=','number','*','number'])
-p.set_tokens_list_and_code_list(['if','number','<','identifier','then','identifier',':=','number',';','repeat',
-            'identifier',':=','identifier','*','identifier',';','identifier',':=','identifier',
-            '-','number','until','identifier','=','number',';','write','identifier','end'],
-            ['if','0','<','x','then','fact',':=','1',';','repeat','fact',':=','fact','*','x',
-            ';','x',':=','x','-','1',';','until','x','=','0',';','write','fact','end'])
-#p.set_tokens_list_and_code_list(['if','identifier','<','number','then','identifier',':=','number','end'])
-p.run()
-
-print (p.nodes_table)
-print (p.edges_table)

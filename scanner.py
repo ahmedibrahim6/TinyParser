@@ -13,6 +13,8 @@ class TinyScanner(object):
                                           ".":  r"\.",
                                           ":":  r"\:"}))
         self.tiny_code = tiny_code
+        self.tokens_list = []
+        self.code_list = []
 
     def setTinyCode(self, tiny_code):
         tiny_code.encode(encoding="utf-8")
@@ -99,7 +101,8 @@ class TinyScanner(object):
             else:
                 tokens_output.append("comment")
 
-        return tokens_output
+        self.code_list = tokens_list
+        self.tokens_list = tokens_output
 
     def createOutputFile(self, filename):
         output_code = self.scan()

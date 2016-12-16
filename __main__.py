@@ -35,8 +35,9 @@ class TinyParserWidget(QWidget):
 
     def submitted(self):
         scanned_code = TinyScanner(self.input_code.toPlainText())
+        scanned_code.scan()
         parse_code = Parser()
-        parse_code.set_code(scanned_code.scan())
+        parse_code.set_tokens_list_and_code_list(scanned_code.tokens_list, scanned_code.code_list)
         parse_code.run()
         nodes_list = parse_code.nodes_table
         edges_list = parse_code.edges_table
