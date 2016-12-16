@@ -4,6 +4,14 @@ import io
 class TinyScanner(object):
     def __init__(self, tiny_code=""):
         tiny_code.encode(encoding="utf-8")
+        tiny_code = tiny_code.translate(str.maketrans({"-":  r"\-",
+                                          "]":  r"\]",
+                                          "\\": r"\\",
+                                          "^":  r"\^",
+                                          "$":  r"\$",
+                                          "*":  r"\*",
+                                          ".":  r"\.",
+                                          ":":  r"\:"}))
         self.tiny_code = tiny_code
 
     def setTinyCode(self, tiny_code):
@@ -76,20 +84,20 @@ class TinyScanner(object):
             if (token_str != ""):
                 tokens_list.append(token_str)
                 token_str = ""
-        tokens_output = ""
+        tokens_output = []
         for t in tokens_list:
             if t in reversed_words:
-                tokens_output = tokens_output + t + ", Reserved Word" + "\n"
+                tokens_output.append(t)
             elif t in special_chars:
-                tokens_output = tokens_output + t + ", Special character" + "\n"
+                tokens_output.append(t)
             elif t == ":=":
-                tokens_output = tokens_output + t + ", Assign" + "\n"
+                tokens_output.append(t)
             elif t.isdigit():
-                tokens_output = tokens_output + t + ", Number" + "\n"
+                tokens_output.append("number")
             elif t.isalpha():
-                tokens_output = tokens_output + t + ", Identifier" + "\n"
+                tokens_output.append("identifier")
             else:
-                tokens_output = tokens_output + t + ", Comment" + "\n"
+                tokens_output.append("comment")
 
         return tokens_output
 
