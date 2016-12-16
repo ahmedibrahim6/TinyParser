@@ -235,3 +235,7 @@ class Parser:
             print('success')
         elif self.tmp_index<len(self.tokens_list):
             raise ValueError('SyntaxError',self.token)
+
+    def clear_tables(self):
+        self.nodes_table.clear()
+        self.edges_table.clear()

@@ -53,11 +53,7 @@ class TinyParserWidget(QWidget):
         parse_code.run()
         nodes_list = parse_code.nodes_table
         edges_list = parse_code.edges_table
-<<<<<<< HEAD
-        print(parse_code.nodes_table)
-=======
 
->>>>>>> 51aa1762d818770b565daa7f89a00bd37b34c386
         self.G = nx.DiGraph()
         for node_number, node_value in nodes_list.items():
             self.G.add_node(node_number, value=node_value)
