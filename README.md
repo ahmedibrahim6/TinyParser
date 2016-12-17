@@ -14,9 +14,9 @@ A parser for Tiny language
 - You need to install the libraries in the requirements.txt file. You can install them via `pip` using the following command<br>
 `pip install -r requirements.txt`
 - You need to install Graphviz
-- - For ubuntu, write this command in terminal<br>
-sudo apt-get install graphviz
-- - For windows, download from this link<br>
+- For ubuntu, write this command in terminal<br>
+`sudo apt-get install graphviz`
+- For windows, download from this link<br>
 http://www.graphviz.org/Download_windows.php
-and then add the following folder to the path in your environment variables
+and then add the following folder to the path in your environment variables<br>
 `C:\Program Files (x86)\Graphviz2.38\bin\`
